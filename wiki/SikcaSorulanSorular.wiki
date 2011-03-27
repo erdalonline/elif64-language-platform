@@ -1,0 +1,56 @@
+#summary Projenin içeriği ile ilgili ayrıntılar
+#labels Phase-Requirements
+
+
+== Temel Yapı ==
+
+ # Sadece Linux işletim sistemi desteklenecek.
+ # Sadece 64-bit PC mimarisi (yani x86_64) desteklenecek.
+ # Elif64 derlenen bir dildir. Sadece Linux Kernel API'sine ihtiyaç duyacak. GNU libc kütüphanesine veya herhangi bir altyapıya ihtiyaç duymayacak.
+ # Dinamik bellek yönetimi dahili heap-manager tarafından sağlanacak. İstenen belleğin geri verilmesi işlemi ile çöp toplayıcı(GC) ilgilenecek. Böylece programcı bellek kaçakları ile uğraşmak zorunda kalmayacak.
+ # Programcı tarafında çok yüksek seviyeli Elif64 programlama dili kullanılacak.
+ # Dilin temel kütüphanesi tam optimize edilmiş olarak %100 el yapımı 64-bit Assembly ile yazılacak.
+ # Çalıştırılabilir dosya, Elif64'ün x86_64 Assembly diline yorumlanması ve temel kütüphane ile birleştirilmesi sonrasında oluşan Assembly kodunun Nasm(The Netwide Assembler) ile derlenmesi sonucunda elde edilecek.
+ # Çok büyük ve çok küçük belleği olan PC'leri destekleyecek.
+ # Birden fazla işlemciye destek veren özelliklerle birlikte gelecek.
+ # Elif64 dili için renklendirme, tamamlama gibi özelliklere sahip bütünleşik yazılım geliştirme ortamı (IDE) yazılacak.
+ 
+
+== Projenin Çıkış Noktaları ==
+ # Derleyicilerin kötü kod üretmesi.
+ # 64-bit PC sahibi iken hala 32-bit uygulamaları kullanmak zorunda kalmak.
+ # 64-bit derlenmiş uygulamaların 64-bit için optimize çalışmamaları.
+ # Yüksek seviyeli bir dil ve zengin kütüphanesi için bilgisayara framework kurmak zorunda kalmak.
+ # Yüksek seviyeli bir dil ve zengin kütüphanesi için nesne yönelimli programlamanın programcıya dayatılması.
+ # Düşük seviyeli dillerin güçlü editörlere, gelişmiş bazı özelliklere sahip olmamaları ve standart kütüphanelerinin küçük olması.
+
+
+== Üstün Tarafları ==
+ # %100 el yapımı, x86_64 Assembly ile en iyi şekilde yazılmış kütüphaneye sahip olması, mimarinin kapasitesini sonuna kadar kullanabilmesi.
+ # Daha hızlı ve daha küçük kod üretilmesinin mümkün olmaması.
+ # Çalıştığı mimariye göre içine dahil edilmiş gereksiz kodları temizlemesi. (Intel/AMD optimizasyonları, 3DNow!/SSE destekleri)
+ # Elif64 programlama dili hem düşük seviyeli dillerin hem de yüksek seviyeli dillerin yazım özelliklerine sahip olacak. Bunun yanında kod yazmayı kolaylaştıran/basitleştiren tekniklere ve çok yüksek seviyeli fonksiyonlara sahip olacak. Bir işi yapmanın birden çok yolu olacak, böylece programcı istediği yerde ayrıntıya girip hakimiyeti eline alabilecek.
+ # Pek çok optimizasyon zamanı geldiğinde uygulanacak. (Fonksiyon geçişlerinde gereksiz yere belleğin kullanılması yerine verimli şekilde registerların kullanımı(ABI uyumsuz iç yapı), bellek yönetimine müdahele edilebilmesi, vs)
+ # Diğer programlama dillerinde gerçekleştirilmesi zor olan birçok özelliğe(crack koruması, uzaktaki makinaya kod yollama, vs) gelecekte destek verebilecek olması.
+
+
+== Zayıf Tarafları ==
+ # Linux dışında diğer işletim sistemleri desteklenmemektedir.
+ # 32bit eski işlemciler desteklenmemektedir.
+ # PC mimarisi dışındaki mimariler desteklenmemektedir.
+ # Diğer uygulamalar ve kütüphanelerle nasıl ortak çalışılacağı henüz tasarlanmamıştır.
+ # Projenin hayata geçmesi uzun yıllar alacaktır.
+
+
+== Karara Bağlanmamış veya Belirsiz Olan Kısımlar ==
+ # Nesne yönelimli programlama desteği. (olsun?/olmasın?)
+ # Sistem programlama desteği. (olsun?/olmasın?)
+ # heap-manager yerleşimi. (gömülü?/ayrı?)
+ # Diğer uygulamalar ve kütüphanelerle ortak çalışma. (!henüz tasarlanmadı!)
+
+
+== Hedefler ==
+ # Zevk aldığım konularla(Assembly ve Linux) ilgilenerek bu konudaki bilgi ve deneyimimi artırmak.
+ # Assembly konusunda Türkçe dökümantasyon oluşturmak.
+ # Güçlü bir dil tasarlayarak bu konudaki bilgi ve deneyimimi artırmak, dökümantasyon oluşturmak.
+ # Proje tamamlandığında güçlü, verimli, hızlı, esnek bir yazılım geliştirme platformuna sahip olmak, elimdekileri diğer insanlarla paylaşmak ve bu platformla yazılım geliştirmek.
