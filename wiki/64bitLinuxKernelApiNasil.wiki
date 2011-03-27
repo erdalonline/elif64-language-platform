@@ -1,0 +1,53 @@
+#summary x86_64 Linux altında Kernel API nasıl çağrılır, örnek uygulama.
+#labels Phase-Implementation
+
+== x86_64 Mimarisinde Linux Kernel API Çağrıları Nasıl Gerçekleştirilir ==
+ # RAX yazmacı(register) sistem çağrı numarasını belirtir (60: sys_exit gibi...)
+ # Parametreler sırası ile RDI,RSI,RDX,R10,R8,R9 yazmaçlarına kaydedilir. (Sistem çağrısı ne kadarına ihtiyaç duyuyorsa o kadarı kullanılır)
+ # Sistem çağrısı sonrasında RCX ve R11 yazmaçlarının içeriği değişir.
+ # Sistem çağrısı geri dönüş değeri için RAX ve RDX yazmaçlarını kullanır. (RDX'e çoğu zaman ihtiyaç duyulmaz.)
+ # RCX, R11 ve geri dönüş yazmaçları dışındaki yazmaçların içerikleri korunur.
+ # 32-bit Linux API çağrıları "int 0x80" komutu ile gerçekleştiriliyordu. 64-bit Linux API çağrılarında "syscall" komutu kullanılır.
+ # 32-bit sistem çağrı numaraları ile 64-bit sistem çağrı numaraları birbirinden farklıdır.
+ # 32-bit sistem çağrı örnekleri 64-bit Linux'larda aynen çalışır fakat gerçek 64-bit kipinde çalışmak istiyorsanız syscall yöntemini kullanmalısınız.
+
+
+
+== Örnek Uygulama ==
+
+Aşağıdaki örnek kod 64-bit Linux için iki adet sistem çağrısını içerir.
+----
+{{{
+bits 64
+
+global _start
+
+section .data
+	hello:		db 'Merhaba Dünya!',10
+
+section .text
+
+_start:
+
+	mov rdx,16		; length of string
+	mov rsi,hello		; string offset
+	mov rdi,1		; file descriptor : 1 - standard output
+	mov rax,1		; system call : sys_write
+	syscall			; Call the kernel
+
+	xor rdi,rdi		; exit status : 0
+	mov rax,60		; system call : sys_exit
+	syscall			; Call the kernel
+
+}}}
+----
+Kaynak kodu "p08.asm" ismi ile kaydettikten sonra aşağıdaki gibi nasm ile derlenip ld ile çalıştırılabilir dosya haline getirilir. Uygulamamız 536 byte'dır. İstenirse daha da küçültülebilir.
+{{{
+nasm -f elf64 -l p08.list p08.asm
+ld -s -o p08 p08.o
+./p08
+Merhaba Dünya!
+
+engin@x:~$ ls -l p08
+-rwxr-xr-x 1 engin engin 536 2011-03-27 20:20 p08
+}}}
