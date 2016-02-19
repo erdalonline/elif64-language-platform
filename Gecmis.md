@@ -1,0 +1,4 @@
+# Tarihler #
+
+27.03.2011 02:00 Cumartesi:
+  * code.google.com'da elif64-language-platform projesi oluşturuldu.
